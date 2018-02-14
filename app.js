@@ -21,10 +21,38 @@ function makeGrid() {
         row.insertCell().setAttribute('id','r'+i+'_c'+x);
         //Add event listener for each of the cells added
         const cell = document.querySelector('#r'+i+'_c'+x);
+
+        const content = document.createElement('i');
+        content.setAttribute('class','fas fa-anchor');
+        content.setAttribute('id','r'+i+'_c'+x+'_icon');
+
+        const divContainer = document.createElement('div');
+        divContainer.setAttribute('class','toggleClass');
+
+        divContainer.appendChild(content);
+        cell.appendChild(divContainer);
+
+
         cell.addEventListener('click',function(evt){
         	console.log("A cell #r"+i+'_c'+x+" has been clicked");
+          flipCard(evt);
           evt.preventDefault;
         })
       }
     }
+}
+
+function flipCard(event) {
+  // const card = document.querySelector('#r0_c0');
+  const card = event.currentTarget;
+  card.style.transform = "rotatey(" + 180 + "deg)";
+  card.style.transitionDuration = "0.5s";
+  const toggleCard = card.firstChild;
+  toggleCard.classList.toggle('toggleClass');
+}
+
+function unFlipCard() {
+  const card = document.querySelector('#r0_c0');
+  card.style.transform = "rotatey(" + 0 + "deg)";
+  card.style.transitionDuration = "0.5s";
 }

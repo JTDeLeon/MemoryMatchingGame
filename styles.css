@@ -16,4 +16,9 @@ body{
 td {
   padding: 50px;
   border: 1px solid black;
+  background-color: grey;
+}
+
+.toggleClass {
+  display: none;
 }
