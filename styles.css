@@ -7,13 +7,13 @@ body{
   font-weight: bold;
 }
 
-.grid {
+#grid {
   margin: auto;
   border-spacing: 10px;
   border-collapse: separate;
 }
 
 td {
-  padding: 30px;
+  padding: 50px;
   border: 1px solid black;
 }
