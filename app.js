@@ -1,20 +1,20 @@
 const icons = [
-    "fab fa-android fa-lg",
-    "fab fa-apple fa-lg",
-    "fab fa-angular fa-lg",
-    "fab fa-react fa-lg",
-    "fab fa-vuejs fa-lg",
-    "fas fa-code fa-lg",
-    "fas fa-code-branch fa-lg",
-    "fas fa-anchor fa-lg",
-    "fab fa-android fa-lg",
-    "fab fa-apple fa-lg",
-    "fab fa-angular fa-lg",
-    "fab fa-react fa-lg",
-    "fab fa-vuejs fa-lg",
-    "fas fa-code fa-lg",
-    "fas fa-code-branch fa-lg",
-    "fas fa-anchor fa-lg"
+    "fab fa-android fa-lg bigText",
+    "fab fa-apple fa-lg bigText",
+    "fab fa-angular fa-lg bigText",
+    "fab fa-react fa-lg bigText",
+    "fab fa-vuejs fa-lg bigText",
+    "fas fa-code fa-lg bigText",
+    "fas fa-code-branch fa-lg bigText",
+    "fas fa-anchor fa-lg bigText",
+    "fab fa-android fa-lg bigText",
+    "fab fa-apple fa-lg bigText",
+    "fab fa-angular fa-lg bigText",
+    "fab fa-react fa-lg bigText",
+    "fab fa-vuejs fa-lg bigText",
+    "fas fa-code fa-lg bigText",
+    "fas fa-code-branch fa-lg bigText",
+    "fas fa-anchor fa-lg bigText"
 ];
 
 const startButton = document.querySelector('#start');
@@ -37,25 +37,47 @@ function makeGrid() {
       row.setAttribute('id','row'+i);
       for(let x=0; x < width; x++){
         //Create a nested for loop to target the row number and build the # of columns for each rows
+
         row.insertCell().setAttribute('id','r'+i+'_c'+x);
         //Add event listener for each of the cells added
         const cell = document.querySelector('#r'+i+'_c'+x);
+        cell.setAttribute('class','flip');
 
         const content = document.createElement('i');
         content.setAttribute('class',arrayIcons[counter]);
         counter+=1;
         content.setAttribute('id','r'+i+'_c'+x+'_icon');
 
+        const span = document.createElement('span');
+        span.setAttribute('class','text');
+        span.appendChild(content);
+
+
         const divContainer = document.createElement('div');
-        divContainer.setAttribute('class','toggleClass');
+        divContainer.setAttribute('class','cardContainer');
 
-        divContainer.appendChild(content);
-        cell.appendChild(divContainer);
+        const backOfCard = document.createElement('div');
+        backOfCard.setAttribute('class','back');
+
+        const frontOfCard = document.createElement('div');
+        frontOfCard.setAttribute('class','front');
+        frontOfCard.textContent = 'Front';
+
+        backOfCard.appendChild(span);
+        divContainer.appendChild(backOfCard);
+        divContainer.appendChild(frontOfCard);
 
 
-        cell.addEventListener('click',function(evt){
+        cell.appendChild(divContainer)
+
+
+
+
+
+        divContainer.addEventListener('click',function(evt){
         	console.log("A cell #r"+i+'_c'+x+" has been clicked");
           flipCard(evt);
+
           evt.preventDefault;
         })
       }
@@ -66,9 +88,9 @@ function flipCard(event) {
   // const card = document.querySelector('#r0_c0');
   const card = event.currentTarget;
   card.style.transform = "rotatey(" + 180 + "deg)";
-  card.style.transitionDuration = "1s";
-  const toggleCard = card.firstChild;
-  toggleCard.classList.toggle('toggleClass');
+  console.log("just rotated Y!");
+  card.style.transitionDuration = "2s";
+  card.style.transformStyle = 'preserve-3d';
 }
 
 function unFlipCard() {
@@ -78,7 +100,7 @@ function unFlipCard() {
 }
 
 function shuffleArray(array) {
-  let currentIndex = array.length, temporaryValue, randomIndex;
+  let currentIndex = array.length, tempVal, randomIndex;
 
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
@@ -88,9 +110,9 @@ function shuffleArray(array) {
     currentIndex -= 1;
 
     // And swap it with the current element.
-    temporaryValue = array[currentIndex];
+    tempVal = array[currentIndex];
     array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+    array[randomIndex] = tempVal;
   }
 
   return array;
