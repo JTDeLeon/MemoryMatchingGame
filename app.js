@@ -30,6 +30,7 @@ function makeGrid() {
     let classMatch = "";
     let anotherClassMatch = "";
     let ifMatch;
+    let isComplete = true;
     //Resets the table if a current grid is in place
     if(newCanvas.hasChildNodes()){
       newCanvas.removeChild(newCanvas.firstChild);
@@ -79,8 +80,11 @@ function makeGrid() {
 
         //Card Listener
         divContainer.addEventListener('click',function(evt){
-        	//console.log("A cell #r"+i+'_c'+x+" has been clicked");
-          let firstFlip = flipCard(evt);
+
+          //Prevents further clicks until animation is complete
+          if(isComplete){
+          flipCard(evt);
+
           //console.dir(firstFlip);
           if(!clicked){
             clicked = isClicked();
@@ -88,6 +92,7 @@ function makeGrid() {
             //Recording the first click
           }
           else {
+
             anotherClassMatch = recordMatch(evt);
             //Recording the second click
             //console.log('Class 1 = '+classMatch+' and Class 2 = '+anotherClassMatch);
@@ -101,11 +106,24 @@ function makeGrid() {
               console.log("IT IS OFFICIAL, A MATCH HAS BEEN FOUND!!!!");
               //Need to figure out how to isolate those that are already found
               removeFlippedClass();
+              removeFlippedClass();
             }
             else{
+              isComplete = false;
               //Unflip the cards
               console.log("No Match Found! Resetting cards now! ");
-              unFlipCard();
+              console.log("STARTING TIMEOUT NOW!");
+              setTimeout(function(){
+                console.log("TimeOut");
+                unFlipCard();
+                removeFlippedClass();
+                console.log('second unflip');
+                unFlipCard();
+                removeFlippedClass();
+                isComplete = true;
+              },1000);
+
+
               // unFlipCard(anotherClassMatch);
             }
 
@@ -114,10 +132,12 @@ function makeGrid() {
             clicked = false;
           }
 
-          console.log('the value of click is '+clicked);
+          console.log('the VALUE of click is '+clicked);
 
           evt.preventDefault;
+        }
         })
+
       }
     }
 }
@@ -128,14 +148,14 @@ function flipCard(event) {
   // console.dir(card);
   card.style.transform = "rotatey(" + 180 + "deg)";
   //console.log("just rotated Y!");
-  card.style.transitionDuration = "2s";
+  card.style.transitionDuration = "1s";
   card.style.transformStyle = 'preserve-3d';
 
   return card;
 }
 
 function unFlipCard() {
-
+  console.dir(document.querySelectorAll('.flipped'));
   const card1 = document.querySelectorAll('.flipped')[0];
 
   console.log(card1);
@@ -143,22 +163,24 @@ function unFlipCard() {
   const element1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
 
   element1.style.transform = "rotatey(" + 0 + "deg)";
-  element1.style.transitionDuration = "2s";
+  element1.style.transitionDuration = "1s";
 
 
 
 
-  const card2 = document.querySelectorAll('.flipped')[1];
+  // const card2 = document.querySelectorAll('.flipped')[1];
+  //
+  // console.log(card2);
+  //
+  // const element2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
+  //
+  // element2.style.transform = "rotatey(" + 0 + "deg)";
+  // element2.style.transitionDuration = "1s";
 
-  console.log(card2);
+  // card1.classList.remove('flipped');
+  // card2.classList.remove('flipped');
 
-  const element2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
 
-  element2.style.transform = "rotatey(" + 0 + "deg)";
-  element2.style.transitionDuration = "2s";
-
-  card2.classList.remove('flipped');
-  card1.classList.remove('flipped');
   // const card2 = document.getElementsByClassName('flipped')[0].id;
   //
   // console.log(card2);
@@ -211,7 +233,8 @@ function checkIfMatch(classMatch, classes) {
   //
   // const classes = event.currentTarget.children[0].children[0].children[0].classList.value;
   // console.dir(classes);
-
+  console.log('--> checking '+classMatch);
+  console.log('--> with '+classes);
   if(classes === classMatch){
     //console.log("Match is found within checking function!");
     return true;
@@ -228,14 +251,18 @@ function recordMatch(event) {
 
   const newClass = event.currentTarget.children[0].children[0].children[0].classList.value = classes+" flipped";
 
-  //console.dir(newClass);
+  console.log("- recording a match and adding a flipped class to -> ");
+  console.log(event.currentTarget.children[0].children[0].children[0]);
   return classes;
 }
 
 function removeFlippedClass() {
+  console.log('removing flipped class from ->>> ');
+  console.log(document.querySelectorAll('.flipped')[0]);
+
   const card1 = document.querySelectorAll('.flipped')[0];
-  const card2 = document.querySelectorAll('.flipped')[1];
+  // const card2 = document.querySelectorAll('.flipped')[1];
   card1.classList.remove('flipped');
-  card2.classList.remove('flipped');
+  // card2.classList.remove('flipped');
 
 }
