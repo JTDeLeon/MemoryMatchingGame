@@ -32,9 +32,20 @@ function makeGrid() {
     let ifMatch;
     let isComplete = true;
     let winCounter = 0;
+    let scoreCounter = 0;
     //Resets the table if a current grid is in place
     if(newCanvas.hasChildNodes()){
       newCanvas.removeChild(newCanvas.firstChild);
+    }
+    //Resets winningText if exists
+    if(document.querySelector('#winningText') != null){
+      document.querySelector('#winningText').remove();
+    }
+
+    //Resets Score on new game
+    if(document.querySelector('#gameScore').textContent != '0'){
+      scoreCounter = 0;
+      document.querySelector('#gameScore').textContent = 0;
     }
 
     for(let i = 0; i < height; i++){
@@ -101,7 +112,8 @@ function makeGrid() {
             //console.log('Class 1 = '+classMatch+' and Class 2 = '+anotherClassMatch);
             //Checking if the match is made
             ifMatch = checkIfMatch(classMatch, anotherClassMatch);
-
+            scoreCounter += 1;
+            updateScoreCounter(scoreCounter);
             console.log("ifMatch is now set to "+ifMatch);
 
             //If the match is true!
@@ -116,6 +128,7 @@ function makeGrid() {
               //Check if we won the game!
               if(winCounter == 8){
                 console.log('YOU HAVE WON THE GAME!');
+                winGame();
               }
               else{
                 console.log('Keep Matching');
@@ -214,6 +227,7 @@ function checkIfMatch(classMatch, classes) {
   // console.dir(classes);
   console.log('--> checking '+classMatch);
   console.log('--> with '+classes);
+
   if(classes === classMatch){
     //console.log("Match is found within checking function!");
     return true;
@@ -243,5 +257,23 @@ function removeFlippedClass() {
   // const card2 = document.querySelectorAll('.flipped')[1];
   card1.classList.remove('flipped');
   // card2.classList.remove('flipped');
+
+}
+
+function winGame() {
+  const length = document.getElementsByClassName('back').length;
+  for(var i = 0; i<length; i++){
+    const winningElements = document.getElementsByClassName('back')[i].style.cssText = 'background-color: yellow';
+  }
+  const h1 = document.querySelector('.title');
+  h1.insertAdjacentHTML('afterend','<h2 id="winningText">You\'ve won the game!');
+
+  document.querySelector('#winningText').style.cssText = 'color: green; text-decoration: underline;';
+
+}
+
+function updateScoreCounter(scoreCounter){
+  //Update Score Counter
+  document.querySelector('#gameScore').textContent = scoreCounter;
 
 }

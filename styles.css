@@ -7,6 +7,19 @@ body{
   font-weight: bold;
 }
 
+.scoreContainer {
+  display: flex;
+}
+
+.score {
+  margin: auto;
+  justify-content: center;
+}
+
+.highScore {
+  font-style: italic;
+}
+
 #grid {
   margin: auto;
   border-spacing: 10px;
