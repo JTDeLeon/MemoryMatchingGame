@@ -17,6 +17,9 @@ const icons = [
     "fas fa-anchor fa-lg bigText"
 ];
 
+//Set score counter to initialize it
+let bestScoreCounter = 1000;
+
 const startButton = document.querySelector('#start');
 startButton.addEventListener('click',makeGrid);
 
@@ -33,6 +36,7 @@ function makeGrid() {
     let isComplete = true;
     let winCounter = 0;
     let scoreCounter = 0;
+
     //Resets the table if a current grid is in place
     if(newCanvas.hasChildNodes()){
       newCanvas.removeChild(newCanvas.firstChild);
@@ -112,8 +116,11 @@ function makeGrid() {
             //console.log('Class 1 = '+classMatch+' and Class 2 = '+anotherClassMatch);
             //Checking if the match is made
             ifMatch = checkIfMatch(classMatch, anotherClassMatch);
+
+            //Updates Score
             scoreCounter += 1;
             updateScoreCounter(scoreCounter);
+
             console.log("ifMatch is now set to "+ifMatch);
 
             //If the match is true!
@@ -122,13 +129,18 @@ function makeGrid() {
               winCounter += 1;
               console.log("win counter is now = "+winCounter);
 
-
               removeFlippedClass();
               removeFlippedClass();
               //Check if we won the game!
               if(winCounter == 8){
                 console.log('YOU HAVE WON THE GAME!');
                 winGame();
+
+                if(scoreCounter < bestScoreCounter){
+                  bestScoreCounter = scoreCounter;
+                  document.querySelector('#bestScore').textContent = bestScoreCounter;
+                }
+
               }
               else{
                 console.log('Keep Matching');
@@ -260,7 +272,7 @@ function removeFlippedClass() {
 
 }
 
-function winGame() {
+function winGame(scoreCounter) {
   const length = document.getElementsByClassName('back').length;
   for(var i = 0; i<length; i++){
     const winningElements = document.getElementsByClassName('back')[i].style.cssText = 'background-color: yellow';
