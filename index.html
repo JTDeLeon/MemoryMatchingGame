@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <header>
@@ -18,13 +22,17 @@
         <p class="score bestScore">Best Game Score: <span id="bestScore">N/A</span></p>
       </div>
       <!-- TODO: Add Refresh Button -->
-      <input type="button" id="start" value="Start New Game">
-      <i class="fas fa-anchor"></i>
+      <input type="button" class="button" id="start" value="Start New Game">
+
     </header>
 
     <main class="grid_container">
       <table id="grid"></table>
     </main>
+
+    <footer>
+      <p>Created by Jonathan Deleon - February 2018</p>
+    </footer>
 
     <script type="text/javascript" src="app.js"></script>
   </body>

@@ -1,10 +1,17 @@
 body{
   text-align: center;
+  /* background-image: url(img/background.png); */
+  background-color: black;
+  font-family: 'Orbitron', sans-serif;
 }
 
 .title {
   font-size: 50px;
   font-weight: bold;
+  background: white;
+  border: 2px solid lime;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .scoreContainer {
@@ -14,14 +21,34 @@ body{
 .score {
   margin: auto;
   justify-content: center;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid lime;
 }
 
 .bestScore {
   font-style: italic;
 }
 
+.button {
+    background-color: lime;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    border-radius: 10px;
+}
+
 .grid_container {
   margin: 20px 0;
+  border-radius: 20px;
 }
 
 #grid {
@@ -33,7 +60,7 @@ body{
 td {
   width: 200px;
   height: 200px;
-  background-color: grey;
+  background-color: black;
   padding: 10px;
 }
 
@@ -55,6 +82,7 @@ td {
   left: 0;
   backface-visibility: hidden;
   border-radius: 20px;
+  border: 2px solid lime;
 }
 
 .back {
@@ -69,6 +97,7 @@ td {
   backface-visibility: hidden;
   transform: rotateY(-180deg);
   border-radius: 20px;
+  border: 2px solid lime;
 }
 
 .text {
@@ -78,4 +107,8 @@ td {
 
 .bigText {
   font-size: 50px;
+}
+
+footer {
+  color: lime;
 }

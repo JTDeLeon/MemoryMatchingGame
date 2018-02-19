@@ -82,7 +82,7 @@ function makeGrid() {
 
         const frontOfCard = document.createElement('div');
         frontOfCard.setAttribute('class','front');
-        frontOfCard.textContent = 'Front';
+
 
         backOfCard.appendChild(span);
         divContainer.appendChild(backOfCard);
@@ -125,7 +125,7 @@ function makeGrid() {
               console.log("IT IS OFFICIAL, A MATCH HAS BEEN FOUND!!!!");
               winCounter += 1;
               console.log("win counter is now = "+winCounter);
-
+              isComplete = false;
               //TODO Add a Match Animation
 
               tadaAnimation();
@@ -134,6 +134,7 @@ function makeGrid() {
                 removeFlippedClass();
                 removeFlippedClass();
                 removeTada();
+                isComplete = true;
               },1000);
               //Check if we won the game!
               if(winCounter == 8){
@@ -279,9 +280,9 @@ function winGame(scoreCounter) {
     const winningElements = document.getElementsByClassName('back')[i].style.cssText = 'background-color: yellow';
   }
   const h1 = document.querySelector('.title');
-  h1.insertAdjacentHTML('afterend','<h2 id="winningText">You\'ve won the game!');
+  h1.insertAdjacentHTML('afterend','<h2 id="winningText">You\'ve won the game! >> Play Again?');
 
-  document.querySelector('#winningText').style.cssText = 'color: green; text-decoration: underline;';
+  document.querySelector('#winningText').style.cssText = 'color: lime;';
 
 }
 
