@@ -31,6 +31,7 @@ function makeGrid() {
     let anotherClassMatch = "";
     let ifMatch;
     let isComplete = true;
+    let winCounter = 0;
     //Resets the table if a current grid is in place
     if(newCanvas.hasChildNodes()){
       newCanvas.removeChild(newCanvas.firstChild);
@@ -81,6 +82,8 @@ function makeGrid() {
         //Card Listener
         divContainer.addEventListener('click',function(evt){
 
+
+
           //Prevents further clicks until animation is complete
           if(isComplete){
           flipCard(evt);
@@ -104,9 +107,19 @@ function makeGrid() {
             //If the match is true!
             if(ifMatch){
               console.log("IT IS OFFICIAL, A MATCH HAS BEEN FOUND!!!!");
-              //Need to figure out how to isolate those that are already found
+              winCounter += 1;
+              console.log("win counter is now = "+winCounter);
+
+
               removeFlippedClass();
               removeFlippedClass();
+              //Check if we won the game!
+              if(winCounter == 8){
+                console.log('YOU HAVE WON THE GAME!');
+              }
+              else{
+                console.log('Keep Matching');
+              }
             }
             else{
               isComplete = false;
@@ -136,7 +149,9 @@ function makeGrid() {
 
           evt.preventDefault;
         }
-        })
+
+      });
+
 
       }
     }
@@ -164,42 +179,6 @@ function unFlipCard() {
 
   element1.style.transform = "rotatey(" + 0 + "deg)";
   element1.style.transitionDuration = "1s";
-
-
-
-
-  // const card2 = document.querySelectorAll('.flipped')[1];
-  //
-  // console.log(card2);
-  //
-  // const element2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
-  //
-  // element2.style.transform = "rotatey(" + 0 + "deg)";
-  // element2.style.transitionDuration = "1s";
-
-  // card1.classList.remove('flipped');
-  // card2.classList.remove('flipped');
-
-
-  // const card2 = document.getElementsByClassName('flipped')[0].id;
-  //
-  // console.log(card2);
-  //
-  // const element2 = document.getElementById(card2).parentNode.parentNode.parentNode;
-  //
-  // console.dir(element2);
-  //
-  //
-  // element2.style.transform = "rotatey(" + 0 + "deg)";
-  // element2.style.transitionDuration = "0.5s";
-  //
-  // //SOMETHING IS WRONG HERE
-  //
-  // const switchElement2 = document.getElementById(card2);
-  //
-  // switchElement1.setAttribute('class',anotherClassMatch);
-
-
 }
 
 function shuffleArray(array) {
