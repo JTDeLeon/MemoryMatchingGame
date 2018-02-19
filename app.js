@@ -97,23 +97,20 @@ function makeGrid() {
         //Card Listener
         divContainer.addEventListener('click',function(evt){
 
-
-
           //Prevents further clicks until animation is complete
           if(isComplete){
           flipCard(evt);
 
-          //console.dir(firstFlip);
           if(!clicked){
             clicked = isClicked();
-            classMatch = recordMatch(evt);
+
             //Recording the first click
+            classMatch = recordMatch(evt);
+
           }
           else {
-
+            //Recording second click
             anotherClassMatch = recordMatch(evt);
-            //Recording the second click
-            //console.log('Class 1 = '+classMatch+' and Class 2 = '+anotherClassMatch);
             //Checking if the match is made
             ifMatch = checkIfMatch(classMatch, anotherClassMatch);
 
@@ -129,8 +126,15 @@ function makeGrid() {
               winCounter += 1;
               console.log("win counter is now = "+winCounter);
 
-              removeFlippedClass();
-              removeFlippedClass();
+              //TODO Add a Match Animation
+
+              tadaAnimation();
+
+              setTimeout(function(){
+                removeFlippedClass();
+                removeFlippedClass();
+                removeTada();
+              },1000);
               //Check if we won the game!
               if(winCounter == 8){
                 console.log('YOU HAVE WON THE GAME!');
@@ -152,17 +156,25 @@ function makeGrid() {
               console.log("No Match Found! Resetting cards now! ");
               console.log("STARTING TIMEOUT NOW!");
               setTimeout(function(){
+                //TODO Add a No Match Animation
+                wobbleAnimation();
+
                 console.log("TimeOut");
+
                 unFlipCard();
                 removeFlippedClass();
                 console.log('second unflip');
                 unFlipCard();
                 removeFlippedClass();
                 isComplete = true;
+
+                setTimeout(function(){
+                  removeWobble();
+                },500);
+
               },1000);
 
 
-              // unFlipCard(anotherClassMatch);
             }
 
             console.log("Now Resetting Click To False");
@@ -183,11 +195,8 @@ function makeGrid() {
 }
 
 function flipCard(event) {
-  // const card = document.querySelector('#r0_c0');
   const card = event.currentTarget;
-  // console.dir(card);
   card.style.transform = "rotatey(" + 180 + "deg)";
-  //console.log("just rotated Y!");
   card.style.transitionDuration = "1s";
   card.style.transformStyle = 'preserve-3d';
 
@@ -232,20 +241,14 @@ function isClicked() {
 }
 
 function checkIfMatch(classMatch, classes) {
-  // console.log("now checking if this is a match");
-  // console.log('I can access Class Match : '+classMatch);
-  //
-  // const classes = event.currentTarget.children[0].children[0].children[0].classList.value;
-  // console.dir(classes);
+
   console.log('--> checking '+classMatch);
   console.log('--> with '+classes);
 
   if(classes === classMatch){
-    //console.log("Match is found within checking function!");
     return true;
   }
   else{
-    //console.log("Match is NOT found within checking function!");
     return false;
   }
 
@@ -266,9 +269,7 @@ function removeFlippedClass() {
   console.log(document.querySelectorAll('.flipped')[0]);
 
   const card1 = document.querySelectorAll('.flipped')[0];
-  // const card2 = document.querySelectorAll('.flipped')[1];
   card1.classList.remove('flipped');
-  // card2.classList.remove('flipped');
 
 }
 
@@ -285,7 +286,49 @@ function winGame(scoreCounter) {
 }
 
 function updateScoreCounter(scoreCounter){
-  //Update Score Counter
   document.querySelector('#gameScore').textContent = scoreCounter;
 
+}
+
+function wobbleAnimation() {
+  const wobble1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
+  const wobble2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
+
+  wobble1.classList.add('animated', 'wobble');
+  wobble2.classList.add('animated', 'wobble');
+
+  // wobble1.classList.remove('animated', 'wobble');
+  // wobble2.classList.remove('animated', 'wobble');
+  return true;
+
+  console.log("end of wobble function");
+
+}
+
+function removeWobble() {
+  const wobble1 = document.querySelectorAll('.wobble')[0];
+  const wobble2 = document.querySelectorAll('.wobble')[1];
+
+  wobble1.classList.remove('animated', 'wobble');
+  wobble2.classList.remove('animated', 'wobble');
+}
+
+function tadaAnimation() {
+  const tada1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
+  const tada2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
+
+  tada1.classList.add('animated', 'tada');
+  tada2.classList.add('animated', 'tada');
+
+
+  console.log("end of tada function");
+
+}
+
+function removeTada() {
+  const tada1 = document.querySelectorAll('.tada')[0];
+  const tada2 = document.querySelectorAll('.tada')[1];
+
+  tada1.classList.remove('animated', 'tada');
+  tada2.classList.remove('animated', 'tada');
 }

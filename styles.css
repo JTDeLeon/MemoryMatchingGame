@@ -20,16 +20,19 @@ body{
   font-style: italic;
 }
 
+.grid_container {
+  margin: 20px 0;
+}
+
 #grid {
   margin: auto;
-  border-spacing: 10px;
-  border-collapse: separate;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 
 td {
   width: 200px;
   height: 200px;
-  border: 1px solid black;
   background-color: grey;
   padding: 10px;
 }
@@ -51,6 +54,7 @@ td {
   top: 0;
   left: 0;
   backface-visibility: hidden;
+  border-radius: 20px;
 }
 
 .back {
@@ -64,6 +68,7 @@ td {
   left: 0;
   backface-visibility: hidden;
   transform: rotateY(-180deg);
+  border-radius: 20px;
 }
 
 .text {
