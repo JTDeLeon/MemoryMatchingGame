@@ -156,9 +156,13 @@ function makeGrid() {
               //Unflip the cards
               console.log("No Match Found! Resetting cards now! ");
               console.log("STARTING TIMEOUT NOW!");
+
+              wobbleAnimation();
+
               setTimeout(function(){
                 //TODO Add a No Match Animation
-                wobbleAnimation();
+                removeWobble();
+                removeWobble();
 
                 console.log("TimeOut");
 
@@ -167,13 +171,15 @@ function makeGrid() {
                 console.log('second unflip');
                 unFlipCard();
                 removeFlippedClass();
+
                 isComplete = true;
 
-                setTimeout(function(){
-                  removeWobble();
-                },500);
 
-              },1000);
+
+
+
+
+              },3900);
 
 
             }
@@ -307,11 +313,19 @@ function wobbleAnimation() {
 }
 
 function removeWobble() {
-  const wobble1 = document.querySelectorAll('.wobble')[0];
-  const wobble2 = document.querySelectorAll('.wobble')[1];
+  const wobble1 = document.querySelectorAll('.wobble');
+  // // const wobble2 = document.querySelectorAll('.wobble')[1];
+  //
+  // wobble1.classList.remove('animated', 'wobble');
+  // // wobble2.classList.remove('animated', 'wobble');
+  console.log('inside while loop');
+  wobble1[0].classList.remove('wobble');
+  wobble1[0].classList.remove('animated');
 
-  wobble1.classList.remove('animated', 'wobble');
-  wobble2.classList.remove('animated', 'wobble');
+
+  // document.querySelector('.wobble').classList.remove('wobble');
+  // document.querySelector('.wobble').classList.remove('animated');
+
 }
 
 function tadaAnimation() {
