@@ -126,8 +126,8 @@ function makeGrid() {
               winCounter += 1;
               console.log("win counter is now = "+winCounter);
               isComplete = false;
-              //TODO Add a Match Animation
 
+              //Match Animation
               tadaAnimation();
 
               setTimeout(function(){
@@ -284,6 +284,7 @@ function winGame(scoreCounter) {
   const length = document.getElementsByClassName('back').length;
   for(var i = 0; i<length; i++){
     const winningElements = document.getElementsByClassName('back')[i].style.cssText = 'background-color: yellow';
+    document.getElementsByClassName('back')[i].classList.add('flash');
   }
   const h1 = document.querySelector('.title');
   h1.insertAdjacentHTML('afterend','<h2 id="winningText">You\'ve won the game! >> Play Again?');

@@ -150,7 +150,7 @@ footer {
   }
 }
 
-/* Animations Originally Provided by Animation.css */
+/* Animations Originally Provided by Animation.css @ https://daneden.github.io/animate.css/ */
 @keyframes tada {
   from {
     -webkit-transform: scale3d(1, 1, 1);
@@ -192,9 +192,6 @@ footer {
   animation-duration: 4s;
 }
 
-
-/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
-
 @keyframes wobble {
   from {
     transform: translate3d(0, 0, 0);
@@ -234,5 +231,84 @@ footer {
 .wobble {
   animation-name: wobble;
   animation-duration: 4s;
+
+}
+
+@-webkit-keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+
+@keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+
+.flash {
+  -webkit-animation-name: flash;
+  animation-name: flash;
+  animation-duration: 4s;
+}
+
+
+/* Smart phone experience */
+@media screen  and (max-width: 500px){
+  #grid {
+    width: 100%;
+  }
+
+  td {
+    width: 60px;
+    height: 60px;
+  }
+
+  .cardContainer,
+  .back,
+  .front {
+    width: 60px;
+    height: 60px;
+    margin: 0;
+  }
+
+  .bigText {
+    font-size: 30px;
+  }
+
+}
+
+/* Tablet Experience */
+@media screen and (min-width: 501px) and (max-width: 1000px){
+  #grid {
+    width: 100%;
+  }
+
+  td {
+    width: 150px;
+    height: 150px;
+  }
+
+  .cardContainer,
+  .back,
+  .front {
+    width: 150px;
+    height: 150px;
+    margin: 0;
+  }
 
 }
