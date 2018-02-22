@@ -1,5 +1,5 @@
 # Memory Matching Game
-## ** Created by Jonathan Deleon **
+## **Created by Jonathan Deleon**
 
 ### How to use/play
 This game is my take on a digital matching game within a computer oriented styling.
@@ -9,7 +9,7 @@ This game is my take on a digital matching game within a computer oriented styli
 3. Click on pairs and attempt to obtain a match (same card on each click)
 4. Keep matching and racing against the clock and score!
 
-** Multiple players can play within same game session by entering different player names before a game completes. **
+**Multiple players can play within same game session by entering different player names before a game completes.**
 
 
 ### Dependencies
@@ -17,8 +17,8 @@ This game is my take on a digital matching game within a computer oriented styli
 * animation.css open source css animations
 * Google Fonts - Orbitron
 
-### Game Logic
-##### Star Ratings:
+### Game Logic:
+##### Star Ratings
 * You lose a star every 10 moves you make (max 30 moves and you're at 0 stars).
 
 ##### Score
