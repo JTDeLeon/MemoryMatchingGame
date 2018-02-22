@@ -77,6 +77,14 @@ function makeGrid() {
       startTimer();
     }
 
+    //Resets Stars on new Game
+    if(document.querySelectorAll('.removeStar') != null){
+      const starsClass = document.querySelectorAll('.removeStar');
+      for(let i = 0; i<starsClass.length; i++){
+        starsClass[i].classList.remove('removeStar');
+      }
+    }
+
     for(let i = 0; i < height; i++){
       //Create a for loop to build the rows, and set the attribute for the row
       const row = newCanvas.insertRow();
@@ -143,6 +151,19 @@ function makeGrid() {
             console.log('scoreCounter is '+scoreCounter);
             scoreCounter += 1;
             updateScoreCounter(scoreCounter);
+            //Take Stars
+            if(scoreCounter >= 10 && scoreCounter<20){
+              //Take one star away
+              toggle1Star();
+            }else if(scoreCounter >= 20 && scoreCounter < 30){
+              toggle1Star();
+              toggle2Stars();
+
+            }else if(scoreCounter >= 30){
+              //Take all stars away
+              toggle2Stars();
+              toggle3Stars();
+            }
             console.log('scoreCounter is '+scoreCounter);
 
             console.log("ifMatch is now set to "+ifMatch);
@@ -784,4 +805,25 @@ function startTimer() {
 
 function stopTimer(timerInt) {
   clearInterval(timerInt);
+}
+
+function toggle1Star() {
+  const star = document.querySelector('#star1');
+  star.classList.toggle('removeStar');
+}
+
+function toggle2Stars() {
+  const star = document.querySelector('#star1');
+  const star2 = document.querySelector('#star2');
+  star.classList.toggle('removeStar');
+  star2.classList.toggle('removeStar');
+}
+
+function toggle3Stars() {
+  const star = document.querySelector('#star1');
+  const star2 = document.querySelector('#star2');
+  const star3 = document.querySelector('#star3');
+  star.classList.toggle('removeStar');
+  star2.classList.toggle('removeStar');
+  star3.classList.toggle('removeStar');
 }

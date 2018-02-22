@@ -35,7 +35,7 @@ body{
 time {
   color:white;
   margin: auto;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
   justify-content: center;
   font-size: 20px;
 }
@@ -52,6 +52,14 @@ time {
 #pName {
   font-size: 15px;
   text-align: center;
+}
+
+.ratings {
+  margin-bottom: 50px;
+}
+
+.fa-star {
+  color: lime;
 }
 
 #instructions {
@@ -134,6 +142,10 @@ td {
 
 .bigText {
   font-size: 50px;
+}
+
+.removeStar {
+  display:none;
 }
 
 .pop-up {
@@ -335,6 +347,10 @@ footer {
 /* Smart phone experience */
 @media screen  and (max-width: 500px){
   time {
+    margin-bottom: 5px;
+  }
+
+  .ratings {
     margin-bottom: 20px;
   }
 
