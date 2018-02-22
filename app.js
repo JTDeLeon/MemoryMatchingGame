@@ -1,3 +1,4 @@
+//Array that holds the FontAwesome icon codes for SVG images on cards 
 const icons = [
     "fab fa-android fa-lg bigText",
     "fab fa-apple fa-lg bigText",
@@ -22,10 +23,13 @@ let bestScoreCounter = 1000;
 let wins = [];
 let timerInt;
 
+//Event listener on start new game button
 const startButton = document.querySelector('#start');
 startButton.addEventListener('click',makeGrid);
 
+//Main function to set up the grid & logic
 function makeGrid() {
+    //Initialize function variables
     const height = 4;
     const width = 4;
     const newCanvas = document.getElementById('grid');
@@ -38,12 +42,6 @@ function makeGrid() {
     let isComplete = true;
     let winCounter = 0;
     let scoreCounter = 0;
-
-
-
-
-
-
 
     //Resets the table if a current grid is in place
     if(newCanvas.hasChildNodes()){
@@ -84,14 +82,13 @@ function makeGrid() {
         starsClass[i].classList.remove('removeStar');
       }
     }
-
+    //Create Grid
+    //Create a for loop to build the rows, and set the attribute for the row
     for(let i = 0; i < height; i++){
-      //Create a for loop to build the rows, and set the attribute for the row
       const row = newCanvas.insertRow();
       row.setAttribute('id','row'+i);
+      //Create a nested for loop to target the row number and build the # of columns for each rows
       for(let x=0; x < width; x++){
-        //Create a nested for loop to target the row number and build the # of columns for each rows
-
         row.insertCell().setAttribute('id','r'+i+'_c'+x);
         //Add event listener for each of the cells added
         const cell = document.querySelector('#r'+i+'_c'+x);
@@ -102,11 +99,12 @@ function makeGrid() {
         counter+=1;
         content.setAttribute('id','r'+i+'_c'+x+'_icon');
 
+        //parent of svg images
         const span = document.createElement('span');
         span.setAttribute('class','text');
         span.appendChild(content);
 
-
+        //Creates card
         const divContainer = document.createElement('div');
         divContainer.setAttribute('class','cardContainer');
 
@@ -116,150 +114,136 @@ function makeGrid() {
         const frontOfCard = document.createElement('div');
         frontOfCard.setAttribute('class','front');
 
-
+        //put together elements in dom
         backOfCard.appendChild(span);
         divContainer.appendChild(backOfCard);
         divContainer.appendChild(frontOfCard);
 
-
         cell.appendChild(divContainer)
 
-
-
-
-        //Card Listener
+        //Add Card Click Event Listener
         divContainer.addEventListener('click',function(evt){
 
-          //Prevents further clicks until animation is complete
+          //Prevents further clicks until card animations are complete
           if(isComplete){
-          flipCard(evt);
+            //flips target card
+            flipCard(evt);
 
-          if(!clicked){
-            clicked = isClicked();
+            //Sets the notice that a click happened and records the class of the first card to match against (using classes)
+            if(!clicked){
+              clicked = isClicked();
 
-            //Recording the first click
-            classMatch = recordMatch(evt);
+              //Recording the first click class
+              classMatch = recordMatch(evt);
 
-          }
-          else {
-            //Recording second click
-            anotherClassMatch = recordMatch(evt);
-            //Checking if the match is made
-            ifMatch = checkIfMatch(classMatch, anotherClassMatch);
-
-            //Updates Score
-            console.log('scoreCounter is '+scoreCounter);
-            scoreCounter += 1;
-            updateScoreCounter(scoreCounter);
-            //Take Stars
-            if(scoreCounter >= 10 && scoreCounter<20){
-              //Take one star away
-              remove1Star();
-            }else if(scoreCounter >= 20 && scoreCounter < 30){
-              remove1Star();
-              remove2Stars();
-
-            }else if(scoreCounter >= 30){
-              //Take all stars away
-              remove2Stars();
-              remove3Stars();
             }
-            console.log('scoreCounter is '+scoreCounter);
+            //Else, this is the second click and a match logic should be performed
+            else {
+              //Recording second click
+              anotherClassMatch = recordMatch(evt);
+              //Checking if the match is made
+              ifMatch = checkIfMatch(classMatch, anotherClassMatch);
 
-            console.log("ifMatch is now set to "+ifMatch);
+              //Updates Score & updates DOM
+              scoreCounter += 1;
+              updateScoreCounter(scoreCounter);
 
-            //If the match is true!
-            if(ifMatch){
-              console.log("IT IS OFFICIAL, A MATCH HAS BEEN FOUND!!!!");
-              winCounter += 1;
-              console.log("win counter is now = "+winCounter);
-              isComplete = false;
+              //Checks wheter to take star ratings away
+              if(scoreCounter >= 10 && scoreCounter<20){
+                //Take one star away
+                remove1Star();
+              }else if(scoreCounter >= 20 && scoreCounter < 30){
+                //Take two stars away
+                remove2Stars();
+              }else if(scoreCounter >= 30){
+                //Take all stars away
+                remove3Stars();
+              }
 
-              //Match Animation
-              tadaAnimation();
+              //If the match is made (true)!
+              if(ifMatch){
+                //Increase the match counter (called winCounter)
+                winCounter += 1;
 
-              setTimeout(function(){
-                removeFlippedClass();
-                removeFlippedClass();
-                removeTada();
-                isComplete = true;
-              },1000);
-              //Check if we won the game!
-              if(winCounter == 8){
-                console.log('YOU HAVE WON THE GAME!');
-                winGameAnimation();
-                stopTimer(timerInt);
-                // setTimeout(function(){
-                console.log('wins before the win function');
-                console.log(wins);
-                wins = winGame(wins);
+                //Set variable to false to prevent continuation of event clicks until animations have completed
+                isComplete = false;
 
-                  console.log("wins after the winGameFunction ");
-                  console.log(wins);
-                // },5000);
+                //Match Animation
+                tadaAnimation();
 
+                //To Run after animation has completed
+                setTimeout(function(){
+                  //Remove flipped class from 'flipped' cards
+                  removeFlippedClass();
+                  removeFlippedClass();
+                  //Remove tada class so that we can call this again if needed
+                  removeTada();
+                  //Allow a continuation of flipping cards
+                  isComplete = true;
+                },1000);
 
+                //Check if we won the game! (16 cards and 8 pairs.)
+                if(winCounter == 8){
+                  //Run game win animation
+                  // winGameAnimation();
+                  //Stop timer
+                  stopTimer(timerInt);
 
-                if(scoreCounter < bestScoreCounter){
-                  bestScoreCounter = scoreCounter;
-                  document.querySelector('#bestScore').textContent = bestScoreCounter;
+                  //Set in local memory (in an array) of our win {player, score, time} object
+                  wins = winGame(wins);
+
+                  //Set best score counter in DOM if we made a new best score
+                  if(scoreCounter < bestScoreCounter){
+                    bestScoreCounter = scoreCounter;
+                    document.querySelector('#bestScore').textContent = bestScoreCounter;
+                  }
+
                 }
 
               }
+              //If Match is not made
               else{
-                console.log('Keep Matching');
+                //Set to false to allow animations to complete before continuing to flip cards
+                isComplete = false;
+
+                //No Match Made Animation
+                wobbleAnimation();
+
+                //After enough time for animation to complete.
+                setTimeout(function(){
+                  //Remove wobble class in order to allow these cards to reuse animation
+                  removeWobble();
+                  removeWobble();
+
+                  //UnFlipCards (reset back to front facing)
+                  unFlipCard();
+                  removeFlippedClass();
+
+                  unFlipCard();
+                  removeFlippedClass();
+
+                  //Allow new flips to be made.
+                  isComplete = true;
+                },3900);
+
+
               }
+
+              //Reset our click variable in order to represent a new pair of cards to be selected
+              clicked = false;
             }
-            else{
-              isComplete = false;
-              //Unflip the cards
-              console.log("No Match Found! Resetting cards now! ");
-              console.log("STARTING TIMEOUT NOW!");
-
-              wobbleAnimation();
-
-              setTimeout(function(){
-                //TODO Add a No Match Animation
-                removeWobble();
-                removeWobble();
-
-                console.log("TimeOut");
-
-                unFlipCard();
-                removeFlippedClass();
-                console.log('second unflip');
-                unFlipCard();
-                removeFlippedClass();
-
-                isComplete = true;
-
-
-
-
-
-
-              },3900);
-
-
-            }
-
-            console.log("Now Resetting Click To False");
-
-            clicked = false;
-          }
-
-          console.log('the VALUE of click is '+clicked);
-
-          evt.preventDefault;
+            //Prevents default action to be taken.
+            evt.preventDefault;
         }
 
       });
 
 
-      }
     }
+  }
 }
 
+//Flips card to show back
 function flipCard(event) {
   const card = event.currentTarget;
   card.style.transform = "rotatey(" + 180 + "deg)";
@@ -269,22 +253,18 @@ function flipCard(event) {
   return card;
 }
 
-
+//Flips card from back facing to front facing
 function unFlipCard() {
-  console.dir(document.querySelectorAll('.flipped'));
   const card1 = document.querySelectorAll('.flipped')[0];
-
-  console.log(card1);
-
   const element1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
 
   element1.style.transform = "rotatey(" + 0 + "deg)";
   element1.style.transitionDuration = "1s";
 }
 
+//Shuffle Randomly the array in which the icons are ordered and pulled from
 function shuffleArray(array) {
   let currentIndex = array.length, tempVal, randomIndex;
-
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
 
@@ -301,16 +281,14 @@ function shuffleArray(array) {
   return array;
 }
 
+//Returns boolean
 function isClicked() {
   clicked = true;
-  console.log('Click Variable is now set to '+clicked);
   return clicked;
 }
 
+//Checks a match of classes to see if icons are same
 function checkIfMatch(classMatch, classes) {
-
-  console.log('--> checking '+classMatch);
-  console.log('--> with '+classes);
 
   if(classes === classMatch){
     return true;
@@ -321,25 +299,22 @@ function checkIfMatch(classMatch, classes) {
 
 }
 
+//Records the flipped card classes in order to match later
 function recordMatch(event) {
   const classes = event.currentTarget.children[0].children[0].children[0].classList.value;
 
   const newClass = event.currentTarget.children[0].children[0].children[0].classList.value = classes+" flipped";
 
-  console.log("- recording a match and adding a flipped class to -> ");
-  console.log(event.currentTarget.children[0].children[0].children[0]);
   return classes;
 }
 
+//Removes the flipped class
 function removeFlippedClass() {
-  console.log('removing flipped class from ->>> ');
-  console.log(document.querySelectorAll('.flipped')[0]);
-
   const card1 = document.querySelectorAll('.flipped')[0];
   card1.classList.remove('flipped');
-
 }
 
+//Animation for all the cards to flash and turn yellow (not currently in use)
 function winGameAnimation(){
   //Animates the win
   const length = document.getElementsByClassName('back').length;
@@ -349,190 +324,189 @@ function winGameAnimation(){
   }
 }
 
+//Function to hold all the win logic
 function winGame(wins) {
   //Wins is an array of scores w/ player names
 
+  //Clear out the grid and Create a new pop up leaderboard
+  const grid = document.querySelector('#grid');
+  grid.textContent = "";
+  grid.insertAdjacentHTML('afterend',popUpLeaderBoard);
 
+  //Add win message
+  addWinMessage();
 
-  //Delay Add The Congrats Message PopUp
-  // setTimeout(function(){
-    //Create new pop up
-    const grid = document.querySelector('#grid');
-    grid.textContent = "";
-    grid.insertAdjacentHTML('afterend',popUpLeaderBoard);
+  //If this is the first win made
+  if(wins.length === 0){
+    const newPlayer = createPlayerProfile();
+    const newPlayerScore = getPlayerScore(newPlayer);
+    const newPlayerName = getPlayerName(newPlayer);
 
-    //Add win message
-    addWinMessage();
+    const newArray = updateWinsArray(wins,newPlayer);
+    updateLeaderBoard(newArray, newArray);
 
-    if(wins.length === 0){
-      const newPlayer = createPlayerProfile();
-      const newPlayerScore = getPlayerScore(newPlayer);
-      const newPlayerName = getPlayerName(newPlayer);
+    //Returns the array with the new Player Object attached
+    return newArray;
+  }
+  //Already one score stored within leaderboard
+  else if(wins.length === 1){
+    const newPlayer = createPlayerProfile();
+    const newPlayerScore = getPlayerScore(newPlayer);
+    const newPlayerName = getPlayerName(newPlayer);
 
-      const newArray = updateWinsArray(wins,newPlayer);
-      updateLeaderBoard(newArray, newArray);
-      console.log(newArray);
-      //Returns the array with the new Player Object attached
+    const player1 = wins[0];
+    const player1Score = getPlayerScore(wins[0]);
+    const player1Name = getPlayerName(wins[0]);
+
+    if(player1Score < newPlayerScore){
+      //Append new player
+      let newArray = [player1, newPlayer];
+      newArray = sortArray(newArray);
+      let newTimeArray = sortArrayByTime(newArray);
+      updateLeaderBoard(newArray, newTimeArray);
       return newArray;
     }
-    //Already one score stored within leaderboard
-    else if(wins.length === 1){
-      const newPlayer = createPlayerProfile();
-      const newPlayerScore = getPlayerScore(newPlayer);
-      const newPlayerName = getPlayerName(newPlayer);
-
-      const player1 = wins[0];
-      const player1Score = getPlayerScore(wins[0]);
-      const player1Name = getPlayerName(wins[0]);
-
-      if(player1Score < newPlayerScore){
-        //Append new player
-        let newArray = [player1, newPlayer];
-        newArray = sortArray(newArray);
-        let newTimeArray = sortArrayByTime(newArray);
-        updateLeaderBoard(newArray, newTimeArray);
-        return newArray;
-      }
-      else{
-        let newArray = [newPlayer, player1];
-        newArray = sortArray(newArray);
-        let newTimeArray = sortArrayByTime(newArray);
-        updateLeaderBoard(newArray, newTimeArray);
-        return newArray;
-      }
+    else{
+      let newArray = [newPlayer, player1];
+      newArray = sortArray(newArray);
+      let newTimeArray = sortArrayByTime(newArray);
+      updateLeaderBoard(newArray, newTimeArray);
+      return newArray;
     }
-    //If there are 2 current scores stored
-    else if(wins.length === 2){
-      const newPlayer = createPlayerProfile();
-      const newPlayerScore = getPlayerScore(newPlayer);
-      const newPlayerName = getPlayerName(newPlayer);
+  }
+  //If there are 2 current scores stored
+  else if(wins.length === 2){
+    const newPlayer = createPlayerProfile();
+    const newPlayerScore = getPlayerScore(newPlayer);
+    const newPlayerName = getPlayerName(newPlayer);
 
-      //It's inherit that player 1 score is better than player 2 score
-      const player1 = wins[0];
-      const player1Score = getPlayerScore(wins[0]);
-      const player1Name = getPlayerName(wins[0]);
+    //It's inherit that player 1 score is better than player 2 score
+    const player1 = wins[0];
+    const player1Score = getPlayerScore(wins[0]);
+    const player1Name = getPlayerName(wins[0]);
 
-      const player2 = wins[1];
-      const player2Score = getPlayerScore(wins[1]);
-      const player2Name = getPlayerName(wins[1]);
+    const player2 = wins[1];
+    const player2Score = getPlayerScore(wins[1]);
+    const player2Name = getPlayerName(wins[1]);
 
-      if(newPlayerScore < player1Score){
-        //Set newplayer score as #1
-        let newArray = [player2, player1, newPlayer];
-        newArray = sortArray(newArray);
-        let newTimeArray = sortArrayByTime(newArray);
-        updateLeaderBoard(newArray, newTimeArray);
-        return newArray;
-      }else if(newPlayerScore < player2Score){
-        //Set newplayer score as #2
-        let newArray = [player2, newPlayer, player1];
-        newArray = sortArray(newArray);
-        let newTimeArray = sortArrayByTime(newArray);
-        updateLeaderBoard(newArray, newTimeArray);
-        return newArray;
-      }else {
-        //Set newplayer score as #3
-        let newArray = [newPlayer, player2, player1];
-        newArray = sortArray(newArray);
-        let newTimeArray = sortArrayByTime(newArray);
-        updateLeaderBoard(newArray, newTimeArray);
-        return newArray;
-      }
+    if(newPlayerScore < player1Score){
+      //Set newplayer score as #1
+      let newArray = [player2, player1, newPlayer];
+      newArray = sortArray(newArray);
+      let newTimeArray = sortArrayByTime(newArray);
+      updateLeaderBoard(newArray, newTimeArray);
+      return newArray;
+    }else if(newPlayerScore < player2Score){
+      //Set newplayer score as #2
+      let newArray = [player2, newPlayer, player1];
+      newArray = sortArray(newArray);
+      let newTimeArray = sortArrayByTime(newArray);
+      updateLeaderBoard(newArray, newTimeArray);
+      return newArray;
+    }else {
+      //Set newplayer score as #3
+      let newArray = [newPlayer, player2, player1];
+      newArray = sortArray(newArray);
+      let newTimeArray = sortArrayByTime(newArray);
+      updateLeaderBoard(newArray, newTimeArray);
+      return newArray;
     }
-    //If there are 3 leaderboards
-    else {
-      const newPlayer = createPlayerProfile();
-      const newPlayerScore = getPlayerScore(newPlayer);
-      const newPlayerName = getPlayerName(newPlayer);
+  }
+  //If there are 3 leaderboards
+  else {
+    const newPlayer = createPlayerProfile();
+    const newPlayerScore = getPlayerScore(newPlayer);
+    const newPlayerName = getPlayerName(newPlayer);
 
-      //It's inherit that player 1 score is better than player 2 score
-      const player1 = wins[0];
-      const player1Score = getPlayerScore(wins[0]);
-      const player1Name = getPlayerName(wins[0]);
-      //It's inherit that player 2 score is better than player 3 score
-      const player2 = wins[1];
-      const player2Score = getPlayerScore(wins[1]);
-      const player2Name = getPlayerName(wins[1]);
-      //It's inherit that player 3 score is the lowest score of the bunch
-      const player3 = wins[2];
-      const player3Score = getPlayerScore(wins[2]);
-      const player3Name = getPlayerName(wins[2]);
+    //It's inherit that player 1 score is better than player 2 score
+    const player1 = wins[0];
+    const player1Score = getPlayerScore(wins[0]);
+    const player1Name = getPlayerName(wins[0]);
+    //It's inherit that player 2 score is better than player 3 score
+    const player2 = wins[1];
+    const player2Score = getPlayerScore(wins[1]);
+    const player2Name = getPlayerName(wins[1]);
+    //It's inherit that player 3 score is the lowest score of the bunch
+    const player3 = wins[2];
+    const player3Score = getPlayerScore(wins[2]);
+    const player3Name = getPlayerName(wins[2]);
 
-      if(newPlayerScore < player1Score || newPlayerScore < player2Score || newPlayerScore < player3Score){
-        //Set new player as the new number 1 and bump off the player 3
-        //newplayer is added into the array
-        if(player1Score <= player2Score && player1Score <= player3Score){
-          //Player1 is added into array
-          if(player2Score < player3Score){
-            //Player2 added into array
-            let newArray = [newPlayer, player1, player2];
-            newArray = sortArray(newArray);
-            let newTimeArray = sortArrayByTime(newArray);
-            updateLeaderBoard(newArray, newTimeArray);
-            return newArray;
-          }
-          else{
-            //Player 3 added into array
-            let newArray = [newPlayer, player1, player3];
-            newArray = sortArray(newArray);
-            let newTimeArray = sortArrayByTime(newArray);
-            updateLeaderBoard(newArray, newTimeArray);
-            return newArray;
-          }
+    if(newPlayerScore < player1Score || newPlayerScore < player2Score || newPlayerScore < player3Score){
+      //Set new player as the new number 1 and bump off the player 3
+      //newplayer is added into the array
+      if(player1Score <= player2Score && player1Score <= player3Score){
+        //Player1 is added into array
+        if(player2Score < player3Score){
+          //Player2 added into array
+          let newArray = [newPlayer, player1, player2];
+          newArray = sortArray(newArray);
+          let newTimeArray = sortArrayByTime(newArray);
+          updateLeaderBoard(newArray, newTimeArray);
+          return newArray;
         }
-        else if(player2Score <= player1Score && player2Score <= player3Score){
-          //Player 2 added to array
-          if(player1Score < player3Score){
-            //Player 1 added to array
-            let newArray = [newPlayer, player2, player1];
-            newArray = sortArray(newArray);
-            let newTimeArray = sortArrayByTime(newArray);
-            updateLeaderBoard(newArray, newTimeArray);
-            return newArray;
-          }
-          else {
-            //Player 3 added to array
-            let newArray = [newPlayer, player2, player3];
-            newArray = sortArray(newArray);
-            let newTimeArray = sortArrayByTime(newArray);
-            updateLeaderBoard(newArray, newTimeArray);
-            return newArray;
-          }
+        else{
+          //Player 3 added into array
+          let newArray = [newPlayer, player1, player3];
+          newArray = sortArray(newArray);
+          let newTimeArray = sortArrayByTime(newArray);
+          updateLeaderBoard(newArray, newTimeArray);
+          return newArray;
+        }
+      }
+      else if(player2Score <= player1Score && player2Score <= player3Score){
+        //Player 2 added to array
+        if(player1Score < player3Score){
+          //Player 1 added to array
+          let newArray = [newPlayer, player2, player1];
+          newArray = sortArray(newArray);
+          let newTimeArray = sortArrayByTime(newArray);
+          updateLeaderBoard(newArray, newTimeArray);
+          return newArray;
         }
         else {
           //Player 3 added to array
-          if(player1Score < player2Score){
-            //Player 1 added to array
-            let newArray = [newPlayer, player1, player3];
-            newArray = sortArray(newArray);
-            let newTimeArray = sortArrayByTime(newArray);
-            updateLeaderBoard(newArray, newTimeArray);
-            return newArray;
-          }
-          else {
-            //Player 2 added to array
-            let newArray = [newPlayer, player2, player3];
-            newArray = sortArray(newArray);
-            let newTimeArray = sortArrayByTime(newArray);
-            updateLeaderBoard(newArray, newTimeArray);
-            return newArray;
-          }
+          let newArray = [newPlayer, player2, player3];
+          newArray = sortArray(newArray);
+          let newTimeArray = sortArrayByTime(newArray);
+          updateLeaderBoard(newArray, newTimeArray);
+          return newArray;
         }
-
-      }else{
-        //return the original players
-        let newArray = [player3, player2, player1];
-        newArray = sortArray(newArray);
-        let newTimeArray = sortArrayByTime(newArray);
-        updateLeaderBoard(newArray, newTimeArray);
-        return newArray;
+      }
+      else {
+        //Player 3 added to array
+        if(player1Score < player2Score){
+          //Player 1 added to array
+          let newArray = [newPlayer, player1, player3];
+          newArray = sortArray(newArray);
+          let newTimeArray = sortArrayByTime(newArray);
+          updateLeaderBoard(newArray, newTimeArray);
+          return newArray;
+        }
+        else {
+          //Player 2 added to array
+          let newArray = [newPlayer, player2, player3];
+          newArray = sortArray(newArray);
+          let newTimeArray = sortArrayByTime(newArray);
+          updateLeaderBoard(newArray, newTimeArray);
+          return newArray;
+        }
       }
 
+    }else{
+      //return the original players
+      let newArray = [player3, player2, player1];
+      newArray = sortArray(newArray);
+      let newTimeArray = sortArrayByTime(newArray);
+      updateLeaderBoard(newArray, newTimeArray);
+      return newArray;
     }
+
+  }
 
 
 }
 
+//Sorts the array of objects based on score
 function sortArray(arrayOfObj) {
   let newArray = [];
   if(arrayOfObj.length > 2){
@@ -584,6 +558,7 @@ function sortArray(arrayOfObj) {
   }
 }
 
+//Sorts the array of objects based on time
 function sortArrayByTime(arrayOfObj) {
   let newArray = [];
   if(arrayOfObj.length > 2){
@@ -636,29 +611,30 @@ function sortArrayByTime(arrayOfObj) {
     }
     return newArray;
   }
-  else {
-    console.log("Something went wrong in the sortArrayByTime function");
-  }
 
 }
 
-
+//Adds a congratulations message with a flash animation
 function addWinMessage() {
   const h1 = document.querySelector('.title');
   h1.insertAdjacentHTML('afterend','<h2 id="winningText" class="flash">You\'ve won the game! >> Play Again?');
 
   document.querySelector('#winningText').style.cssText = 'color: lime;';
 }
+
+//Helper function to get the player name from object
 function getPlayerName(object) {
   const name = object.player;
   return name;
 }
 
+//Helper function to get the player score from object
 function getPlayerScore(object) {
   const score = Number(object.score);
   return score;
 }
 
+//Helper function to create the player object
 function createPlayerProfile() {
   const newP = document.querySelector('#pName').value;
   const newPScore = Number(document.querySelector('#gameScore').textContent);
@@ -673,12 +649,14 @@ function createPlayerProfile() {
   return newObj;
 }
 
+//helper function to return a single object array
 function updateWinsArray(wins,newPlayer) {
   if(wins.length === 0){
     return [newPlayer];
   }
 }
 
+//Updates the leaderboard with winners and scores/time
 function updateLeaderBoard(toPrint, timeArray) {
   const newArrayShuffle = toPrint;
   const playerNames = document.querySelector('.player-name');
@@ -694,54 +672,41 @@ function updateLeaderBoard(toPrint, timeArray) {
   }
 }
 
+//Updates the scores counter to the actual score count
 function updateScoreCounter(scoreCounter){
   document.querySelector('#gameScore').textContent = scoreCounter;
 
 }
 
+//adds the wobble animation to a no match pair
 function wobbleAnimation() {
   const wobble1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
   const wobble2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
-//FIX THIS
+
   wobble1.classList.add('animated', 'wobble');
   wobble2.classList.add('animated', 'wobble');
 
-  // wobble1.classList.remove('animated', 'wobble');
-  // wobble2.classList.remove('animated', 'wobble');
   return true;
-
-  console.log("end of wobble function");
-
 }
 
+//Removes the wobble animation class
 function removeWobble() {
   const wobble1 = document.querySelectorAll('.wobble');
-  // // const wobble2 = document.querySelectorAll('.wobble')[1];
-  //
-  // wobble1.classList.remove('animated', 'wobble');
-  // // wobble2.classList.remove('animated', 'wobble');
-  console.log('inside while loop');
+
   wobble1[0].classList.remove('wobble');
   wobble1[0].classList.remove('animated');
-
-
-  // document.querySelector('.wobble').classList.remove('wobble');
-  // document.querySelector('.wobble').classList.remove('animated');
-
 }
 
+//Adds the tada animation class to a match pair
 function tadaAnimation() {
   const tada1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
   const tada2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
 
   tada1.classList.add('animated', 'tada');
   tada2.classList.add('animated', 'tada');
-
-
-  console.log("end of tada function");
-
 }
 
+//Removes the tada animation class
 function removeTada() {
   const tada1 = document.querySelectorAll('.tada')[0];
   const tada2 = document.querySelectorAll('.tada')[1];
@@ -750,6 +715,7 @@ function removeTada() {
   tada2.classList.remove('animated', 'tada');
 }
 
+//Template for the leaderboard (injects HTML)
 function popUpLeaderBoard(){
 
   return
@@ -776,16 +742,14 @@ function popUpLeaderBoard(){
 
       </div>
     </div>
-  </div>
-
-    `
+  </div>`
 }
 
+//Function to begin the timer
 function startTimer() {
   const timer = document.querySelector('#time');
   const seconds = document.querySelector('#seconds');
   const minutes = document.querySelector('#minutes');
-  console.log(timer.textContent);
   let count = 0;
 
   timerInt = setInterval(function(){
@@ -803,15 +767,18 @@ function startTimer() {
 
 }
 
+//Function to stop the timer
 function stopTimer(timerInt) {
   clearInterval(timerInt);
 }
 
+//Toggle the stars display class
 function toggle1Star() {
   const star = document.querySelector('#star1');
   star.classList.toggle('removeStar');
 }
 
+//Toggle the stars display class
 function toggle2Stars() {
   const star = document.querySelector('#star1');
   const star2 = document.querySelector('#star2');
@@ -819,6 +786,7 @@ function toggle2Stars() {
   star2.classList.toggle('removeStar');
 }
 
+//Toggle the stars display class
 function toggle3Stars() {
   const star = document.querySelector('#star1');
   const star2 = document.querySelector('#star2');
@@ -828,12 +796,13 @@ function toggle3Stars() {
   star3.classList.toggle('removeStar');
 }
 
-
+//Adds the stars display:none class
 function remove1Star() {
   const star = document.querySelector('#star1');
   star.classList.add('removeStar');
 }
 
+//Adds the stars display:none class
 function remove2Stars() {
   const star = document.querySelector('#star1');
   const star2 = document.querySelector('#star2');
@@ -841,6 +810,7 @@ function remove2Stars() {
   star2.classList.add('removeStar');
 }
 
+//Adds the stars display:none class
 function remove3Stars() {
   const star = document.querySelector('#star1');
   const star2 = document.querySelector('#star2');
