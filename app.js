@@ -157,14 +157,14 @@ function makeGrid() {
               //Match Animation
               tadaAnimation();
 
-              // setTimeout(function(){
+              setTimeout(function(){
                 removeFlippedClass();
                 removeFlippedClass();
                 removeTada();
                 isComplete = true;
-              // },1000);
+              },1000);
               //Check if we won the game!
-              if(winCounter == 1){
+              if(winCounter == 8){
                 console.log('YOU HAVE WON THE GAME!');
                 winGameAnimation();
                 stopTimer(timerInt);
@@ -624,7 +624,7 @@ function sortArrayByTime(arrayOfObj) {
 
 function addWinMessage() {
   const h1 = document.querySelector('.title');
-  h1.insertAdjacentHTML('afterend','<h2 id="winningText">You\'ve won the game! >> Play Again?');
+  h1.insertAdjacentHTML('afterend','<h2 id="winningText" class="flash">You\'ve won the game! >> Play Again?');
 
   document.querySelector('#winningText').style.cssText = 'color: lime;';
 }

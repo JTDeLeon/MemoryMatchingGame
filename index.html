@@ -19,12 +19,16 @@
       <!-- TODO: Add Player Name -->
       <div class="scoreContainer">
         <h3 class="score">Score: <span id="gameScore">0</span></h3>
-        <time id="time"><span id="minutes">00</span>:<span id="seconds">00</span></time>
+
         <p class="score bestScore">Best Game Score: <span id="bestScore">N/A</span></p>
 
       </div>
-      <input type="text" id='pName' value="Player Name">
-      <input type="button" class="button" id="start" value="Start New Game">
+      <div class="startContainer">
+        <time id="time"><span id="minutes">00</span>:<span id="seconds">00</span></time>
+        <h5 id="instructions">Please enter your name and press start to begin matching. Good Luck!</h5>
+        <input type="text" id='pName' value="Player Name">
+        <input type="button" class="button" id="start" value="Start New Game">
+      </div>
 
     </header>
 
