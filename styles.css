@@ -375,6 +375,9 @@ footer {
     font-size: 30px;
   }
 
+.pop-up {
+  width: 100%;
+}
 }
 
 /* Tablet Experience */

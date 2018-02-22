@@ -154,15 +154,15 @@ function makeGrid() {
             //Take Stars
             if(scoreCounter >= 10 && scoreCounter<20){
               //Take one star away
-              toggle1Star();
+              remove1Star();
             }else if(scoreCounter >= 20 && scoreCounter < 30){
-              toggle1Star();
-              toggle2Stars();
+              remove1Star();
+              remove2Stars();
 
             }else if(scoreCounter >= 30){
               //Take all stars away
-              toggle2Stars();
-              toggle3Stars();
+              remove2Stars();
+              remove3Stars();
             }
             console.log('scoreCounter is '+scoreCounter);
 
@@ -826,4 +826,26 @@ function toggle3Stars() {
   star.classList.toggle('removeStar');
   star2.classList.toggle('removeStar');
   star3.classList.toggle('removeStar');
+}
+
+
+function remove1Star() {
+  const star = document.querySelector('#star1');
+  star.classList.add('removeStar');
+}
+
+function remove2Stars() {
+  const star = document.querySelector('#star1');
+  const star2 = document.querySelector('#star2');
+  star.classList.add('removeStar');
+  star2.classList.add('removeStar');
+}
+
+function remove3Stars() {
+  const star = document.querySelector('#star1');
+  const star2 = document.querySelector('#star2');
+  const star3 = document.querySelector('#star3');
+  star.classList.add('removeStar');
+  star2.classList.add('removeStar');
+  star3.classList.add('removeStar');
 }
