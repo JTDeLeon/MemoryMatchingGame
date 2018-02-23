@@ -1,4 +1,4 @@
-//Array that holds the FontAwesome icon codes for SVG images on cards 
+//Array that holds the FontAwesome icon codes for SVG icons
 const icons = [
     "fab fa-android fa-lg bigText",
     "fab fa-apple fa-lg bigText",
@@ -24,15 +24,15 @@ let wins = [];
 let timerInt;
 
 //Event listener on start new game button
-const startButton = document.querySelector('#start');
-startButton.addEventListener('click',makeGrid);
+const startButton = document.querySelector("#start");
+startButton.addEventListener("click",makeGrid);
 
 //Main function to set up the grid & logic
 function makeGrid() {
     //Initialize function variables
     const height = 4;
     const width = 4;
-    const newCanvas = document.getElementById('grid');
+    const newCanvas = document.getElementById("grid");
     const arrayIcons = shuffleArray(icons);
     let counter = 0;
     let clicked = false;
@@ -48,27 +48,27 @@ function makeGrid() {
       newCanvas.removeChild(newCanvas.firstChild);
     }
     //Resets winningText if exists
-    if(document.querySelector('#winningText') != null){
-      document.querySelector('#winningText').remove();
+    if(document.querySelector("#winningText") != null){
+      document.querySelector("#winningText").remove();
     }
 
     //Resets LeaderBoard
-    if(document.querySelector('.pop-up') != null){
-      document.querySelector('.pop-up').remove();
+    if(document.querySelector(".pop-up") != null){
+      document.querySelector(".pop-up").remove();
     }
 
     //Resets Score on new game
-    if(document.querySelector('#gameScore').textContent != '0'){
+    if(document.querySelector("#gameScore").textContent != "0"){
       scoreCounter = 0;
-      document.querySelector('#gameScore').textContent = 0;
+      document.querySelector("#gameScore").textContent = 0;
     }
 
     //Resets Timer on new game
-    if(document.querySelector('#seconds').textContent != "00"){
+    if(document.querySelector("#seconds").textContent != "00"){
       //NEED TO ADD STOP FEATURE
       stopTimer(timerInt);
-      document.querySelector('#seconds').textContent = "00"
-      document.querySelector('#minutes').textContent = "00";
+      document.querySelector("#seconds").textContent = "00";
+      document.querySelector("#minutes").textContent = "00";
       startTimer();
 
     }else{
@@ -76,43 +76,43 @@ function makeGrid() {
     }
 
     //Resets Stars on new Game
-    if(document.querySelectorAll('.removeStar') != null){
-      const starsClass = document.querySelectorAll('.removeStar');
+    if(document.querySelectorAll(".removeStar") != null){
+      const starsClass = document.querySelectorAll(".removeStar");
       for(let i = 0; i<starsClass.length; i++){
-        starsClass[i].classList.remove('removeStar');
+        starsClass[i].classList.remove("removeStar");
       }
     }
     //Create Grid
     //Create a for loop to build the rows, and set the attribute for the row
     for(let i = 0; i < height; i++){
       const row = newCanvas.insertRow();
-      row.setAttribute('id','row'+i);
+      row.setAttribute("id","row"+i);
       //Create a nested for loop to target the row number and build the # of columns for each rows
       for(let x=0; x < width; x++){
-        row.insertCell().setAttribute('id','r'+i+'_c'+x);
+        row.insertCell().setAttribute("id","r"+i+"_c"+x);
         //Add event listener for each of the cells added
-        const cell = document.querySelector('#r'+i+'_c'+x);
-        cell.setAttribute('class','flip');
+        const cell = document.querySelector("#r"+i+"_c"+x);
+        cell.setAttribute("class","flip");
 
-        const content = document.createElement('i');
-        content.setAttribute('class',arrayIcons[counter]);
+        const content = document.createElement("i");
+        content.setAttribute("class",arrayIcons[counter]);
         counter+=1;
-        content.setAttribute('id','r'+i+'_c'+x+'_icon');
+        content.setAttribute("id","r"+i+"_c"+x+"_icon");
 
         //parent of svg images
-        const span = document.createElement('span');
-        span.setAttribute('class','text');
+        const span = document.createElement("span");
+        span.setAttribute("class","text");
         span.appendChild(content);
 
         //Creates card
-        const divContainer = document.createElement('div');
-        divContainer.setAttribute('class','cardContainer');
+        const divContainer = document.createElement("div");
+        divContainer.setAttribute("class","cardContainer");
 
-        const backOfCard = document.createElement('div');
-        backOfCard.setAttribute('class','back');
+        const backOfCard = document.createElement("div");
+        backOfCard.setAttribute("class","back");
 
-        const frontOfCard = document.createElement('div');
-        frontOfCard.setAttribute('class','front');
+        const frontOfCard = document.createElement("div");
+        frontOfCard.setAttribute("class","front");
 
         //put together elements in dom
         backOfCard.appendChild(span);
@@ -122,7 +122,7 @@ function makeGrid() {
         cell.appendChild(divContainer)
 
         //Add Card Click Event Listener
-        divContainer.addEventListener('click',function(evt){
+        divContainer.addEventListener("click",function(evt){
 
           //Prevents further clicks until card animations are complete
           if(isComplete){
@@ -174,8 +174,11 @@ function makeGrid() {
                 //To Run after animation has completed
                 setTimeout(function(){
                   //Remove flipped class from 'flipped' cards
-                  removeFlippedClass();
-                  removeFlippedClass();
+                  //removeFlippedClass();
+                  while(document.querySelectorAll('.flipped').length != 0){
+                    removeFlippedClass();
+                  }
+
                   //Remove tada class so that we can call this again if needed
                   removeTada();
                   //Allow a continuation of flipping cards
@@ -183,19 +186,18 @@ function makeGrid() {
                 },1000);
 
                 //Check if we won the game! (16 cards and 8 pairs.)
-                if(winCounter == 8){
+                if(winCounter == 2){
                   //Run game win animation
                   // winGameAnimation();
-                  //Stop timer
-                  stopTimer(timerInt);
+
 
                   //Set in local memory (in an array) of our win {player, score, time} object
-                  wins = winGame(wins);
+                  wins = winGame(wins,timerInt);
 
                   //Set best score counter in DOM if we made a new best score
                   if(scoreCounter < bestScoreCounter){
                     bestScoreCounter = scoreCounter;
-                    document.querySelector('#bestScore').textContent = bestScoreCounter;
+                    document.querySelector("#bestScore").textContent = bestScoreCounter;
                   }
 
                 }
@@ -248,15 +250,15 @@ function flipCard(event) {
   const card = event.currentTarget;
   card.style.transform = "rotatey(" + 180 + "deg)";
   card.style.transitionDuration = "1s";
-  card.style.transformStyle = 'preserve-3d';
+  card.style.transformStyle = "preserve-3d";
 
   return card;
 }
 
 //Flips card from back facing to front facing
 function unFlipCard() {
-  const card1 = document.querySelectorAll('.flipped')[0];
-  const element1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
+  const card1 = document.querySelectorAll(".flipped")[0];
+  const element1 = document.querySelectorAll(".flipped")[0].parentNode.parentNode.parentNode;
 
   element1.style.transform = "rotatey(" + 0 + "deg)";
   element1.style.transitionDuration = "1s";
@@ -310,28 +312,31 @@ function recordMatch(event) {
 
 //Removes the flipped class
 function removeFlippedClass() {
-  const card1 = document.querySelectorAll('.flipped')[0];
-  card1.classList.remove('flipped');
+  const card1 = document.querySelectorAll(".flipped")[0];
+
+  card1.classList.remove("flipped");
 }
 
 //Animation for all the cards to flash and turn yellow (not currently in use)
 function winGameAnimation(){
   //Animates the win
-  const length = document.getElementsByClassName('back').length;
+  const length = document.getElementsByClassName("back").length;
   for(var i = 0; i<length; i++){
-    const winningElements = document.getElementsByClassName('back')[i].style.cssText = 'background-color: yellow';
-    document.getElementsByClassName('back')[i].classList.add('flash');
+    const winningElements = document.getElementsByClassName("back")[i].style.cssText = "background-color: yellow";
+    document.getElementsByClassName("back")[i].classList.add("flash");
   }
 }
 
 //Function to hold all the win logic
-function winGame(wins) {
+function winGame(wins,timerInt) {
   //Wins is an array of scores w/ player names
+  //Stop timer
+  stopTimer(timerInt);
 
   //Clear out the grid and Create a new pop up leaderboard
-  const grid = document.querySelector('#grid');
+  const grid = document.querySelector("#grid");
   grid.textContent = "";
-  grid.insertAdjacentHTML('afterend',popUpLeaderBoard);
+  grid.insertAdjacentHTML("afterend",popUpLeaderBoard);
 
   //Add win message
   addWinMessage();
@@ -560,6 +565,7 @@ function sortArray(arrayOfObj) {
 
 //Sorts the array of objects based on time
 function sortArrayByTime(arrayOfObj) {
+
   let newArray = [];
   if(arrayOfObj.length > 2){
     if(arrayOfObj[0].time <= arrayOfObj[1].time && arrayOfObj[0].time <= arrayOfObj[2].time){
@@ -609,6 +615,7 @@ function sortArrayByTime(arrayOfObj) {
     else {
       newArray = [arrayOfObj[1], arrayOfObj[0]];
     }
+
     return newArray;
   }
 
@@ -616,10 +623,10 @@ function sortArrayByTime(arrayOfObj) {
 
 //Adds a congratulations message with a flash animation
 function addWinMessage() {
-  const h1 = document.querySelector('.title');
-  h1.insertAdjacentHTML('afterend','<h2 id="winningText" class="flash">You\'ve won the game! >> Play Again?');
+  const h1 = document.querySelector(".title");
+  h1.insertAdjacentHTML("afterend",'<h2 id="winningText" class="flash">You\'ve won the game! >> Play Again?');
 
-  document.querySelector('#winningText').style.cssText = 'color: lime;';
+  document.querySelector("#winningText").style.cssText = "color: lime;";
 }
 
 //Helper function to get the player name from object
@@ -636,9 +643,9 @@ function getPlayerScore(object) {
 
 //Helper function to create the player object
 function createPlayerProfile() {
-  const newP = document.querySelector('#pName').value;
-  const newPScore = Number(document.querySelector('#gameScore').textContent);
-  const newPTime = document.querySelector('#time').textContent;
+  const newP = document.querySelector("#pName").value;
+  const newPScore = Number(document.querySelector("#gameScore").textContent);
+  const newPTime = document.querySelector("#time").textContent;
 
   const newObj = {
     player: newP,
@@ -659,60 +666,63 @@ function updateWinsArray(wins,newPlayer) {
 //Updates the leaderboard with winners and scores/time
 function updateLeaderBoard(toPrint, timeArray) {
   const newArrayShuffle = toPrint;
-  const playerNames = document.querySelector('.player-name');
-  const playerScores = document.querySelector('.leader-score');
-  const playerNameTime = document.querySelector('.player-name-time');
-  const playerTime = document.querySelector('.leader-time');
+  const playerNames = document.querySelector(".player-name");
+  const playerScores = document.querySelector(".leader-score");
+  const playerNameTime = document.querySelector(".player-name-time");
+  const playerTime = document.querySelector(".leader-time");
 
   for(let i = newArrayShuffle.length-1; i >= 0; i--){
-    playerNames.insertAdjacentHTML('afterbegin','<h3 style="color: lime" class="player">'+newArrayShuffle[i].player+'</h3>');
-    playerScores.insertAdjacentHTML('afterbegin','<h3 class="lb_score">'+newArrayShuffle[i].score+'</h3>');
-    playerNameTime.insertAdjacentHTML('afterbegin','<h3 style="color: lime" class="player">'+timeArray[i].player+'</h3>');
-    playerTime.insertAdjacentHTML('afterbegin','<h3 class="lb_score">'+timeArray[i].time+'</h3>');
+    playerNames.insertAdjacentHTML("afterbegin",'<h3 style="color: lime" class="player">'+newArrayShuffle[i].player+'</h3>');
+    playerScores.insertAdjacentHTML("afterbegin",'<h3 class="lb_score">'+newArrayShuffle[i].score+'</h3>');
+    playerNameTime.insertAdjacentHTML("afterbegin",'<h3 style="color: lime" class="player">'+timeArray[i].player+'</h3>');
+    playerTime.insertAdjacentHTML("afterbegin",'<h3 class="lb_score">'+timeArray[i].time+'</h3>');
   }
 }
 
 //Updates the scores counter to the actual score count
 function updateScoreCounter(scoreCounter){
-  document.querySelector('#gameScore').textContent = scoreCounter;
+  document.querySelector("#gameScore").textContent = scoreCounter;
 
 }
 
 //adds the wobble animation to a no match pair
 function wobbleAnimation() {
-  const wobble1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
-  const wobble2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
+  const wobble1 = document.querySelectorAll(".flipped")[0].parentNode.parentNode.parentNode;
+  const wobble2 = document.querySelectorAll(".flipped")[1].parentNode.parentNode.parentNode;
 
-  wobble1.classList.add('animated', 'wobble');
-  wobble2.classList.add('animated', 'wobble');
+  wobble1.classList.add("animated", "wobble");
+  wobble2.classList.add("animated", "wobble");
 
   return true;
 }
 
 //Removes the wobble animation class
 function removeWobble() {
-  const wobble1 = document.querySelectorAll('.wobble');
+  const wobble1 = document.querySelectorAll(".wobble");
 
-  wobble1[0].classList.remove('wobble');
-  wobble1[0].classList.remove('animated');
+  wobble1[0].classList.remove("wobble");
+  wobble1[0].classList.remove("animated");
 }
 
 //Adds the tada animation class to a match pair
 function tadaAnimation() {
-  const tada1 = document.querySelectorAll('.flipped')[0].parentNode.parentNode.parentNode;
-  const tada2 = document.querySelectorAll('.flipped')[1].parentNode.parentNode.parentNode;
+  const tada1 = document.querySelectorAll(".flipped")[0].parentNode.parentNode.parentNode;
+  const tada2 = document.querySelectorAll(".flipped")[1].parentNode.parentNode.parentNode;
 
-  tada1.classList.add('animated', 'tada');
-  tada2.classList.add('animated', 'tada');
+  tada1.classList.add("animated", "tada");
+  tada2.classList.add("animated", "tada");
 }
 
 //Removes the tada animation class
 function removeTada() {
-  const tada1 = document.querySelectorAll('.tada')[0];
-  const tada2 = document.querySelectorAll('.tada')[1];
+  const tada1 = document.querySelectorAll(".tada")[0];
+  const tada2 = document.querySelectorAll(".tada")[1];
 
-  tada1.classList.remove('animated', 'tada');
-  tada2.classList.remove('animated', 'tada');
+  while(document.querySelectorAll(".tada").length != 0){
+    tada1.classList.remove("animated", "tada");
+    tada2.classList.remove("animated", "tada");
+  }
+  //tada2.classList.remove("animated", "tada");
 }
 
 //Template for the leaderboard (injects HTML)
@@ -747,9 +757,9 @@ function popUpLeaderBoard(){
 
 //Function to begin the timer
 function startTimer() {
-  const timer = document.querySelector('#time');
-  const seconds = document.querySelector('#seconds');
-  const minutes = document.querySelector('#minutes');
+  const timer = document.querySelector("#time");
+  const seconds = document.querySelector("#seconds");
+  const minutes = document.querySelector("#minutes");
   let count = 0;
 
   timerInt = setInterval(function(){
@@ -774,48 +784,48 @@ function stopTimer(timerInt) {
 
 //Toggle the stars display class
 function toggle1Star() {
-  const star = document.querySelector('#star1');
-  star.classList.toggle('removeStar');
+  const star = document.querySelector("#star1");
+  star.classList.toggle("removeStar");
 }
 
 //Toggle the stars display class
 function toggle2Stars() {
-  const star = document.querySelector('#star1');
-  const star2 = document.querySelector('#star2');
-  star.classList.toggle('removeStar');
-  star2.classList.toggle('removeStar');
+  const star = document.querySelector("#star1");
+  const star2 = document.querySelector("#star2");
+  star.classList.toggle("removeStar");
+  star2.classList.toggle("removeStar");
 }
 
 //Toggle the stars display class
 function toggle3Stars() {
-  const star = document.querySelector('#star1');
-  const star2 = document.querySelector('#star2');
-  const star3 = document.querySelector('#star3');
-  star.classList.toggle('removeStar');
-  star2.classList.toggle('removeStar');
-  star3.classList.toggle('removeStar');
+  const star = document.querySelector("#star1");
+  const star2 = document.querySelector("#star2");
+  const star3 = document.querySelector("#star3");
+  star.classList.toggle("removeStar");
+  star2.classList.toggle("removeStar");
+  star3.classList.toggle("removeStar");
 }
 
 //Adds the stars display:none class
 function remove1Star() {
-  const star = document.querySelector('#star1');
-  star.classList.add('removeStar');
+  const star = document.querySelector("#star1");
+  star.classList.add("removeStar");
 }
 
 //Adds the stars display:none class
 function remove2Stars() {
-  const star = document.querySelector('#star1');
-  const star2 = document.querySelector('#star2');
-  star.classList.add('removeStar');
-  star2.classList.add('removeStar');
+  const star = document.querySelector("#star1");
+  const star2 = document.querySelector("#star2");
+  star.classList.add("removeStar");
+  star2.classList.add("removeStar");
 }
 
 //Adds the stars display:none class
 function remove3Stars() {
-  const star = document.querySelector('#star1');
-  const star2 = document.querySelector('#star2');
-  const star3 = document.querySelector('#star3');
-  star.classList.add('removeStar');
-  star2.classList.add('removeStar');
-  star3.classList.add('removeStar');
+  const star = document.querySelector("#star1");
+  const star2 = document.querySelector("#star2");
+  const star3 = document.querySelector("#star3");
+  star.classList.add("removeStar");
+  star2.classList.add("removeStar");
+  star3.classList.add("removeStar");
 }
