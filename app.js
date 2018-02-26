@@ -687,11 +687,22 @@ function updateScoreCounter(scoreCounter){
 
 //adds the wobble animation to a no match pair
 function wobbleAnimation() {
-  const wobble1 = document.querySelectorAll(".flipped")[0].parentNode.parentNode.parentNode;
-  const wobble2 = document.querySelectorAll(".flipped")[1].parentNode.parentNode.parentNode;
+  // const wobble1 = document.querySelectorAll(".flipped")[0].parentNode.parentNode.parentNode;
+  // const wobble2 = document.querySelectorAll(".flipped")[1].parentNode.parentNode.parentNode;
+  //
+  // wobble1.classList.add("animated", "wobble");
+  // wobble2.classList.add("animated", "wobble");
 
-  wobble1.classList.add("animated", "wobble");
-  wobble2.classList.add("animated", "wobble");
+  //New Method For Submission 3:
+  const length = document.querySelectorAll('.flipped').length;
+  let i = 0;
+
+
+  while(i != length){
+    let wobble = document.querySelectorAll(".flipped")[i].parentNode.parentNode.parentNode;
+    wobble.classList.add("animated", "wobble");
+    i += 1;
+  }
 
   return true;
 }
@@ -702,15 +713,27 @@ function removeWobble() {
 
   wobble1[0].classList.remove("wobble");
   wobble1[0].classList.remove("animated");
+
 }
 
 //Adds the tada animation class to a match pair
 function tadaAnimation() {
-  const tada1 = document.querySelectorAll(".flipped")[0].parentNode.parentNode.parentNode;
-  const tada2 = document.querySelectorAll(".flipped")[1].parentNode.parentNode.parentNode;
+  // const tada1 = document.querySelectorAll(".flipped")[0].parentNode.parentNode.parentNode;
+  // const tada2 = document.querySelectorAll(".flipped")[1].parentNode.parentNode.parentNode;
+  //
+  // tada1.classList.add("animated", "tada");
+  // tada2.classList.add("animated", "tada");
 
-  tada1.classList.add("animated", "tada");
-  tada2.classList.add("animated", "tada");
+  //New Method For Submission 3:
+  const length = document.querySelectorAll('.flipped').length;
+  let i = 0;
+
+
+  while(i != length){
+    let tada = document.querySelectorAll(".flipped")[i].parentNode.parentNode.parentNode;
+    tada.classList.add("animated", "tada");
+    i += 1;
+  }
 }
 
 //Removes the tada animation class
@@ -765,13 +788,33 @@ function startTimer() {
   timerInt = setInterval(function(){
     count += 1;
     if(count<60){
-      seconds.textContent = count;
+      //Add Padding to time numbers
+      if(count < 10){
+        seconds.textContent = '0'+count;
+      }
+      else {
+        seconds.textContent = count;
+      }
+
     }
     else{
         const newMin = Math.floor(count/60);
         const newSec = count%60;
-        minutes.textContent = newMin;
-        seconds.textContent = newSec;
+        if(newMin < 10){
+          minutes.textContent = "0"+newMin;
+        }
+        else {
+          minutes.textContent = newMin;
+        }
+
+        if(newSec < 10){
+          seconds.textContent = "0"+newSec;
+        }
+        else {
+          seconds.textContent = newSec;
+        }
+
+
     }
   },1000);
 
