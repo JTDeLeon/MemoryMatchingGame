@@ -43,6 +43,9 @@ function makeGrid() {
     let winCounter = 0;
     let scoreCounter = 0;
 
+    //Stops and resets all timeouts currently.
+    stopAllTimeouts();
+
     //Resets the table if a current grid is in place
     if(newCanvas.hasChildNodes()){
       newCanvas.removeChild(newCanvas.firstChild);
@@ -871,4 +874,14 @@ function remove3Stars() {
   star.classList.add("removeStar");
   star2.classList.add("removeStar");
   star3.classList.add("removeStar");
+}
+
+//Provided with help of http://activelab.io/
+function stopAllTimeouts()
+{
+    var id = window.setTimeout(null,0);
+    while (id--)
+    {
+        window.clearTimeout(id);
+    }
 }
