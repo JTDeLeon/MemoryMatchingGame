@@ -186,7 +186,7 @@ function makeGrid() {
                 },1000);
 
                 //Check if we won the game! (16 cards and 8 pairs.)
-                if(winCounter == 2){
+                if(winCounter == 8){
                   //Run game win animation
                   // winGameAnimation();
 
